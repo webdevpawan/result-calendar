@@ -6,14 +6,9 @@ const getCalendarData = require('../apis/getallCalendars')
 const router = express.Router();
 
 
-router.get('/', () => {
-    return "Hello, world!"
-})
-
 router.post('/register', Register)
 router.post('/login', login)
 router.get('/calendar', getCalendarData)
-
 
 
 module.exports = router;

@@ -21,6 +21,10 @@ mongoose.connect(process.env.MONGO_URL)
         console.log("Connected to MongoDB Atlas");
         app.use('/api', authRoutes)
 
+        app.get('/', (req, res) => {
+            res.send("Hello, world!")
+        })
+
         cron.schedule('30 9 * * *', storeCalendarData);
         cron.schedule('00 15 * * *', storeCalendarData);
 
