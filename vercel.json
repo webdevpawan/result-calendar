@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "routes": [
+      {
+        "src": "/api/register",
+        "dest": "./apis/register.js"
+      },
+      {
+        "src": "/api/login",
+        "dest": "./apis/login.js"
+      },
+      {
+        "src": "/api/calendar",
+        "dest": "./apis/getallCalendars.js"
+      }
+    ]
+  }
