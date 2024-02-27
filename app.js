@@ -25,8 +25,8 @@ mongoose.connect(process.env.MONGO_URL)
             res.send("Hello, world!")
         })
 
-        cron.schedule('30 9 * * *', storeCalendarData);
-        cron.schedule('00 15 * * *', storeCalendarData);
+        // cron.schedule('30 9 * * *', storeCalendarData);
+        // cron.schedule('00 15 * * *', storeCalendarData);
 
 
         app.listen(process.env.PORT, () => {

@@ -1,13 +1,12 @@
 const puppeteer = require('puppeteer');
-const calendar = require('../models/calendarSchema')
+const calendar = require('../models/calendarSchema');
 
-
-const storeCalendarData = async () => {
+const storeCalendarData = async (req, res) => {
     try {
         const browser = await puppeteer.launch({ headless: true, defaultViewport: null, args: ["--start-maximized"] });
         const page = await browser.newPage();
         await page.goto('https://www.moneycontrol.com/markets/earnings/results-calendar/');
-        const data = await page.$$eval('table tbody tr', rows => {
+        let data = await page.$$eval('table tbody tr', rows => {
             return rows.slice(1).map(row => {
                 const cells = [...row.querySelectorAll('td')];
                 return {
@@ -19,25 +18,24 @@ const storeCalendarData = async () => {
                 };
             });
         });
-        console.log(data)
-        try {
-            if (data) {
+
+        // Filter out empty objects from the data array
+        data = data.filter(item => Object.keys(item).length > 0);
+
+        if (data.length > 0) {
+            try {
                 await calendar.insertMany(data);
-                console.log("Calendar data stored in db successfully");
+                res.status(200).json({ message: "Calendar data stored in db successfully" });
+            } catch (error) {
+                res.status(500).json({ message: `Error in storing calendars in db: ${error}` });
             }
-            else {
-                console.log("No results")
-            }
-        } catch (error) {
-            console.log(`Error in storing calendars in db: ${error}`);
+        } else {
+            res.status(204).json({ message: "No results found" });
         }
 
-
     } catch (error) {
-        console.log("error in getting data", error)
+        res.status(500).json({ message: "Error in getting data", error: error.message });
     }
 }
-
-
 
 module.exports = storeCalendarData;
