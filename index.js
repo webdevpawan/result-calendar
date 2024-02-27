@@ -2,9 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./Routes/authRoutes')
 const bodyParser = require('body-parser');
-const cron = require('node-cron');
-const storeCalendarData = require('./apis/storeCalendarData')
-var cors = require('cors')
+const cors = require('cors')
+const serverless = require('serverless-http');
 
 require('dotenv').config();
 
@@ -25,10 +24,6 @@ mongoose.connect(process.env.MONGO_URL)
             res.send("Hello, world!")
         })
 
-        // cron.schedule('30 9 * * *', storeCalendarData);
-        // cron.schedule('00 15 * * *', storeCalendarData);
-
-
         app.listen(process.env.PORT, () => {
             console.log('Server listening on port  3000');
         });
@@ -37,3 +32,5 @@ mongoose.connect(process.env.MONGO_URL)
         console.error("Error connecting to MongoDB Atlas: ", error);
     });
 
+const handler = serverless(app);
+module.exports = handler;

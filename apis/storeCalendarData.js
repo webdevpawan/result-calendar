@@ -18,10 +18,7 @@ const storeCalendarData = async (req, res) => {
                 };
             });
         });
-
-        // Filter out empty objects from the data array
         data = data.filter(item => Object.keys(item).length > 0);
-
         if (data.length > 0) {
             try {
                 await calendar.insertMany(data);
